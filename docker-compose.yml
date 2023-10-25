@@ -12,8 +12,8 @@ services:
     ports:
       - '5432:5432'
     environment:
-      - POSTGRES_USER=app
-      - POSTGRES_PASSWORD=pass
+      POSTGRES_USER: app
+      POSTGRES_PASSWORD: pass
 
   mysql:
     image: mysql:8.0
