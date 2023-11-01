@@ -1,13 +1,8 @@
 package ru.netology.data;
 
 import com.github.javafaker.Faker;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 import lombok.Value;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
@@ -18,65 +13,62 @@ public class DataHelper {
 
     private DataHelper() {
     }
+    private static final Faker fakerRu = new Faker(new Locale("ru"));
 
-
-    private static Faker faker = new Faker(new Locale("ru"));
-
-    public static CardInfo getFirstCardNumberAndStatus() {
-        return new CardInfo("4444 4444 4444 4441", "APPROVED");
+    public static String getValidHolder() {
+        return fakerRu.name().fullName().toUpperCase();
     }
-
-    public static CardInfo getSecondCardNumberAndStatus() {
-        return new CardInfo("4444 4444 4444 4442", "DECLINED");
+    public static String getMonth(int month) {
+        return LocalDate.now().plusMonths(month).format(DateTimeFormatter.ofPattern("MM"));
     }
-
-    public static LocalDate generateValidDate() {
-        return LocalDate.now().plusMonths(14);
+    public static String getYear(int year) {
+        return LocalDate.now().plusYears(year).format(DateTimeFormatter.ofPattern("yy"));
     }
-
-    public static String generateRandomMonth() {
-        String text = String.valueOf((generateValidDate()));
-        char charAtFive = text.charAt(5);
-        char charAtSix = text.charAt(6);
-        return String.valueOf(charAtFive) + String.valueOf(charAtSix);
+    public static String getValidCvc() {
+        return fakerRu.numerify("###");
     }
-
-    public static String generateRandomYear() {
-        String text = String.valueOf((generateValidDate()));
-        char charAtTwo = text.charAt(2);
-        char charAtThree = text.charAt(3);
-        return String.valueOf(charAtTwo) + String.valueOf(charAtThree);
+    public static CardInfo getValidApprovedCardNumber() {
+        return new CardInfo(
+                "4444 4444 4444 4441", getMonth(1), getYear(1), getValidHolder(), getValidCvc());
     }
-
-    public static String generateFullName() {
-        return faker.name().firstName().replaceAll("ё", "е") + " "
-                + faker.name().lastName().replaceAll("ё", "е");
+    public static CardInfo getValidDeclinedCardNumber() {
+        return new CardInfo(
+                "4444 4444 4444 4442", getMonth(1), getYear(1), getValidHolder(), getValidCvc());
     }
-
-    public static String generateCvc() {
-        return faker.number().digits(3);
+    public static CardInfo getInvalidCardNumber() {
+        return new CardInfo(
+                "0000 0000", getMonth(1), getYear(1), getValidHolder(), getValidCvc());
     }
-
-    public static String generateCardNumber() {
-        return faker.business().creditCardNumber();
+    public static CardInfo getEmptyCardNumber() {
+        return new CardInfo(
+                "", getMonth(1), getYear(1), getValidHolder(), getValidCvc());
     }
-
-
+    public static CardInfo getEmptyMonth() {
+        return new CardInfo(
+                "4444 4444 4444 4441", "", getYear(1), getValidHolder(), getValidCvc());
+    }
+    public static CardInfo getEmptyYear() {
+        return new CardInfo(
+                "4444 4444 4444 4441", getMonth(1), "", getValidHolder(), getValidCvc());
+    }
+    public static CardInfo getEmptyHolder() {
+        return new CardInfo(
+                "4444 4444 4444 4441", getMonth(1), getYear(1), "", getValidCvc());
+    }
+    public static CardInfo getEmptyCvc() {
+        return new CardInfo(
+                "4444 4444 4444 4441", getMonth(1), getYear(1), getValidHolder(), "");
+    }
+    public static CardInfo getEmptyAllFields() {
+        return new CardInfo(
+                "", "", "", "", "");
+    }
     @Value
     public static class CardInfo {
-        private String cardNumber;
-        private String status;
-    }
-
-    @Data
-    @NoArgsConstructor
-    @AllArgsConstructor
-    public class UserData {
-
-        public String cardNumber;
-        private String month;
-        private String year;
-        private String nameSurname;
-        private String cvc;
+        String cardNumber;
+        String month;
+        String year;
+        String holder;
+        String cvc;
     }
 }
