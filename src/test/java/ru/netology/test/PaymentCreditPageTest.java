@@ -124,6 +124,17 @@ public class PaymentCreditPageTest {
         paymentPage.invalidCardFormat("Неверный формат");
     }
 
+    // Ошибка при вводе невалидного номера карты
+    @Test
+    @DisplayName("Should show error when card number - invalid")
+    public void shouldShowErrorWhenCardNumberInvalid() {
+        MainPage mainPage = new MainPage();
+        var CardInfo = DataHelper.getInvalidCardNumber();
+        PaymentPage paymentPage = mainPage.paymentButtonClick();
+        paymentPage.validPayCard(CardInfo);
+        paymentPage.invalidCardFormat("Неверный формат");
+    }
+
     // Запись в БД корректной суммы при оплате утвержденной дебетовой картой
     @Test
     @DisplayName("Should get amount when payment by approved debit card")
@@ -239,6 +250,17 @@ public class PaymentCreditPageTest {
         creditPage.invalidCardFormat("Неверный формат");
     }
 
+    // Ошибка при вводе невалидного номера карты для кредитки
+    @Test
+    @DisplayName("Should show error when card number - invalid in credit")
+    public void shouldShowErrorWhenCardNumberInvalidInCredit() {
+        MainPage mainPage = new MainPage();
+        var CardInfo = DataHelper.getInvalidCardNumber();
+        CreditPage creditPage = mainPage.creditButtonClick();
+        creditPage.validPayCard(CardInfo);
+        creditPage.invalidCardFormat("Неверный формат");
+    }
+
     // Запись в БД корректной суммы при оплате утвержденной кредитной картой
     @Test
     @DisplayName("Should get amount when payment by approved credit card")
@@ -251,7 +273,7 @@ public class PaymentCreditPageTest {
         Assertions.assertEquals("45000", SQLHelper.getLastPayUserAmount());
     }
 
-    // Запись в БД корректной суммы при оплате отклоненной дебетовой картой
+    // Запись в БД корректной суммы при оплате отклоненной кредитной картой
     @Test
     @DisplayName("Should get amount when payment by declined credit card")
     public void shouldGetAmountWhenPaymentByDeclinedCreditCard() {
