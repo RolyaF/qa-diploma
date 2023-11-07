@@ -15,8 +15,8 @@ public class SQLHelper {
     @SneakyThrows
     private static Connection getConnection() {
         var dbUrl = System.getProperty("db.url");
-        var login = System.getProperty("login");
-        var password = System.getProperty("password");
+        var login = System.getProperty("app.user");
+        var password = System.getProperty("app.password");
         final Connection connection = DriverManager.getConnection(dbUrl, login, password);
         return connection;
     }

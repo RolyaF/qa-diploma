@@ -144,10 +144,10 @@ public class CreditPageTest {
     @DisplayName("Should get amount when payment by declined credit card")
     public void shouldGetAmountWhenPaymentByDeclinedCreditCard() {
         MainPage mainPage = new MainPage();
-        var CardInfo = DataHelper.getValidApprovedCardNumber();
+        var CardInfo = DataHelper.getValidDeclinedCardNumber();
         CreditPage creditPage = mainPage.creditButtonClick();
         creditPage.validPayCard(CardInfo);
-        creditPage.getSuccessNotification();
+        creditPage.getErrorNotification();
         Assertions.assertEquals("0", SQLHelper.getLastPayUserAmount());
     }
 }
